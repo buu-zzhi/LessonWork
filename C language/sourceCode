@@ -1,0 +1,307 @@
+#include <stdio.h>
+#include <string.h>
+
+int ibook = 9, imember = 9;
+struct member{
+    int number, socre;
+    char name[10];
+}m[1000];
+struct book{
+    int number, price, exist;
+    char name[100];
+}b[1000];
+
+void start();
+int logIn();
+void interface();
+void member_management();
+void book_management ();
+void shopping_view();
+void bookList();
+
+int main()
+{
+    start();
+    while (logIn())
+    {
+        while (1)
+        {
+            interface();
+            int c;
+            scanf("%d", &c);
+            if (c == 1)
+            {
+                member_management();
+            }
+            else if (c == 2)
+            {
+                book_management();
+            }
+            else if (c == 3)
+            {
+                shopping_view();
+            }
+            else if(c == 4)
+            {
+                break;
+            }
+            else
+            {
+            	printf("请输入1至4的数字!\n");
+			}
+        }
+    }
+    return 0;
+}
+
+void start()//初始化数据
+{
+    for (int i = 1; i <= 8; i++)
+    {
+        m[i].number = i;
+        b[i].number = i;
+        b[i].exist = 1;
+    }
+    strcpy(m[1].name, "张三\0"), m[1].socre = 100;
+    strcpy(m[2].name, "李四\0"), m[2].socre = 600;
+    strcpy(m[3].name, "王五\0"), m[3].socre = 500;
+    strcpy(m[4].name, "陆六\0"), m[4].socre = 1000;
+    strcpy(m[5].name, "钱七\0"), m[5].socre = 900;
+    strcpy(m[6].name, "大强\0"), m[6].socre = 100;
+    strcpy(m[7].name, "小丽\0"), m[7].socre = 100;
+    strcpy(m[8].name, "敏敏\0"), m[8].socre = 100;
+
+    strcpy(b[1].name, "C#2.0宝典\0"), b[1].price = 88;
+    strcpy(b[2].name, "Java编程基础\0"), b[2].price = 55;
+    strcpy(b[3].name, "J2SE桌面应用程序开发\0"), b[3].price = 60;
+    strcpy(b[4].name, "数据库设计和应用\0"), b[4].price = 45;
+    strcpy(b[5].name, "水浒传\0"), b[5].price = 55;
+    strcpy(b[6].name, "红楼梦\0"), b[6].price = 68;
+    strcpy(b[7].name, "三国演义\0"), b[7].price = 78;
+    strcpy(b[8].name, "地心游记\0"), b[8].price = 29;
+}
+
+int logIn()//登录判断函数
+{
+	printf("***********************\n");
+	printf("*   图书销售管理系统  *\n");
+	printf("*      1.登录系统     *\n");
+	printf("*      2.退出         *\n");
+	printf("***********************\n");
+	printf("请选择，输入数字(1-2):");
+	int c;
+	scanf("%d", &c);
+	if (c == 1)
+	{
+		char real_name[6] = "admin\0";
+		for (int i = 1; i <= 3; i++)//判断3次输入
+    	{
+    	    char name[6];
+    	    printf("请输入账号：");
+        	scanf("%s", name);
+	        int password;
+	        printf("请输入密码：");
+	        scanf("%d", &password);
+	
+	        //如果输入正确
+	        int compare = strcmp(real_name, name);
+	        if (compare == 0 && password == 123456)
+	        {
+	        	printf("登录成功！\n");
+	            return 1;
+	        }
+	        else if (i <= 2)
+	        {
+	            printf("对不起，您的账号或密码有误，您还有%d次机会\n", 3-i);
+    	    }
+    	    else if (i == 3)
+    	    {
+    	    	printf("连续三次输入不正确, 系统退出！\n");
+    	    	return 0;
+			}
+    	}
+	}
+    else
+	{
+		printf("欢迎再次使用本系统！\n");
+		return 0;
+	}
+    return 0;
+}
+
+void interface()//主界面
+{
+    printf("******************************\n");
+    printf("*      图书销售管理系统      *\n");
+    printf("*         1.会员管理         *\n");
+    printf("*         2.书籍管理         *\n");
+    printf("*         3.购物结算         *\n");
+    printf("*         4.注销             *\n");
+    printf("******************************\n");
+    printf("请选择，输入数字(1-4):");
+}
+
+void member_management()//会员管理
+{
+    while (1)
+    {
+        printf("图书销售管理系统>会员管理\n");
+        printf("**************************\n");
+        printf("*  1.显示所有会员        *\n");
+        printf("*  2.添加会员信息        *\n");
+        printf("*  3.修改会员信息        *\n");
+        printf("*  4.返回主菜单          *\n");
+        printf("**************************\n");
+        printf("请选择，输入数字(1-4):");
+
+        int x;
+        scanf("%d", &x);
+        if (x == 1)
+        {
+            printf("图书销售管理系统>会员信息管理>显示会员信息\n");
+            printf("会员号	姓名	积分\n");
+            for (int i = 1; i < imember; i++)
+            {
+                printf("%4d\t%s\t%d\n", m[i].number, m[i].name, m[i].socre);
+            }
+        }
+        else if (x == 2)
+        {
+            printf("图书销售管理系统>会员信息管理>新增会员信息\n");
+            printf("请输入新会员姓名:");
+            scanf("%s", m[imember].name);
+            printf("请输入新会员积分:");
+            scanf("%d", &m[imember].socre);
+            m[imember].number = imember;
+            imember += 1;
+            printf("添加成功!\n");
+        }
+        else if (x == 3)
+        {
+        	printf("图书销售管理系统>会员信息管理>修改会员信息\n");
+            printf("请输入要修改的会员号(1-%d):", imember-1);
+            int mod;
+            scanf("%d", &mod);
+            printf("请输入要修改的会员姓名:");
+            scanf("%s", m[mod].name);
+            printf("请输入要修改的会员积分:");
+            scanf("%d", &m[mod].socre);
+            printf("修改成功!\n");
+        }
+        else if (x == 4)
+        {
+            break;
+        }
+    }
+}
+
+void bookList()//书单
+{
+	printf("图书销售管理系统>书籍管理>书籍列表\n");
+    printf("图书号		%-*s    %8s\n",20, "图书名", "图书价钱");
+    for (int i = 1; i < ibook; i++)
+    {
+        if (b[i].exist)
+        {
+           	printf("%4d\t\t%-*s %8d\n", b[i].number, 20, b[i].name, b[i].price);
+		}
+    }
+}
+
+void book_management ()//书籍管理
+{
+	while (1)
+	{
+		printf("图书销售管理系统>书籍管理 \n");
+    	printf("****************\n");
+    	printf("* 1.查看书目   *\n");
+    	printf("* 2.添加书籍   *\n");
+    	printf("* 3.删除书籍   *\n");
+    	printf("* 4.返回主菜单 *\n");
+    	printf("****************\n");
+    	printf("请选择，输入数字(1-4):");
+    
+    	int x;
+    	scanf("%d", &x);
+    	if (x == 1)
+    	{
+        	bookList();
+        }
+        else if (x == 2)
+        {
+            printf("图书销售管理系统>书籍管理>添加书籍\n");
+            printf("请输入图书名:");
+            scanf("%s", b[ibook].name);
+            printf("请输入图书价钱:");
+            scanf("%d", &b[ibook].price);
+            b[ibook].number = ibook;
+            b[ibook].exist = 1;
+            ibook += 1;
+            printf("添加成功!\n");
+        }
+        else if (x == 3)
+        {
+        	printf("图书销售管理系统>书籍管理>书籍下架\n");
+            printf("请输入要删除的图书书名:");
+            char book_name[100];
+            scanf("%s", book_name);
+            int p;
+            for (p=1;p<=ibook;p++)
+            {
+            	int compare = strcmp(book_name, b[p].name);
+            	if (compare == 0)
+            	{
+            		b[p].exist = 0;
+            		break;
+				}
+			}
+			if (p < ibook)
+			{
+				printf("找到该图书，位置为:%d\n", p);
+				printf("删除成功!\n");
+			}
+            else
+            {
+            	printf("找不到该图书!\n");
+			}
+        }
+        else if (x == 4)
+        {
+            break;
+        }
+	}
+}
+
+void shopping_view ()
+{
+	while (1)
+	{
+		printf("图书销售管理系统>购物结算 \n");
+		bookList();
+		printf("请输入会员号:");
+		int vipNum, bookNum, count;
+		scanf("%d", &vipNum);
+		printf("请输入要购买的书籍编号:");
+		scanf("%d", &bookNum);
+		printf("请输入您要购买的数量:");
+		scanf("%d", &count);
+		int sum = count * b[bookNum].price;
+		if (m[vipNum].socre >= sum)
+		{
+			printf("您购买的图书为%s, 数量为%d, 总额为%d\n", b[bookNum].name, count, sum);
+			m[vipNum].socre -= sum;
+		}
+		else
+		{
+			printf("您的积分不够, 无法购买!\n");
+		}
+		
+		char ch;
+		printf("是否继续？(y/n):");
+		scanf(" %c", &ch);
+		if (ch == 'n' || ch == 'N')
+		{
+			break;
+		}
+	}
+}
